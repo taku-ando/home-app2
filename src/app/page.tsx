@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { auth, signIn, signOut } from "@/auth";
+import { Button } from "@/components/ui/button";
 
 export default async function Home() {
   const session = await auth();
@@ -66,7 +67,7 @@ export default async function Home() {
                 await signOut();
               }}
             >
-              <button type="submit">Signout</button>
+              <Button type="submit">Signout</Button>
             </form>
           </div>
         ) : (
@@ -77,7 +78,7 @@ export default async function Home() {
                 await signIn("google");
               }}
             >
-              <button type="submit">Signin with Google</button>
+              <Button type="submit">Signin with Google</Button>
             </form>
           </div>
         )}

@@ -9,7 +9,7 @@
 		"indentStyle": "space"
 	},
 	"files": {
-		"includes": ["src"]
+		"includes": ["src/**"]
 	},
 	"linter": {
 		"rules": {
