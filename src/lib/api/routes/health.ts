@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { getDb } from "../../db";
+import { getD1Sesstion, getDb } from "../../db";
 import { families } from "../../db/schema";
 import type {
   DbHealthResponse,
@@ -7,6 +7,7 @@ import type {
   HealthResponse,
 } from "../types";
 import { handleError, jsonSuccess } from "../utils";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 // ヘルスチェック用のルーター
 export const healthRoutes = new Hono();
@@ -63,7 +64,7 @@ healthRoutes.get("/db", async (c) => {
     const startTime = Date.now();
 
     // Cloudflare環境からD1データベースを取得
-    const env = c.env as { HOME_APP2_DB?: D1Database };
+    const { env } = getCloudflareContext();
     if (!env.HOME_APP2_DB) {
       return c.json(
         {
