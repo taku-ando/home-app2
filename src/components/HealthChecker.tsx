@@ -13,9 +13,5 @@ export default function HealthChecker() {
     }
   };
 
-  return (
-    <Button onClick={handleHealthCheck}>
-      Healthcheck
-    </Button>
-  );
+  return <Button onClick={handleHealthCheck}>Healthcheck</Button>;
 }
