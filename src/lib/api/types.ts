@@ -41,6 +41,19 @@ export interface DetailedHealthResponse extends HealthResponse {
   };
 }
 
+// DBヘルスチェックレスポンス
+export interface DbHealthResponse extends HealthResponse {
+  database: {
+    connected: boolean;
+    query_time_ms: number;
+    families_count: number;
+    families_data: Array<{
+      id: number;
+      name: string | null;
+    }>;
+  };
+}
+
 // HTTPステータスコード
 export const HTTP_STATUS = {
   OK: 200,
