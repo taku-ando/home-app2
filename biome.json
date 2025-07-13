@@ -1,26 +1,13 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.1.1/schema.json",
+	"$schema": "https://raw.githubusercontent.com/biomejs/biome/refs/tags/%40biomejs/biome%402.1.1/packages/%40biomejs/biome/configuration_schema.json",
 	"vcs": {
-		"enabled": true,
-		"clientKind": "git",
 		"useIgnoreFile": true
 	},
-	"files": {
-		"ignoreUnknown": false
-	},
 	"formatter": {
-		"enabled": true,
-		"formatWithErrors": false,
-		"indentStyle": "tab",
-		"indentWidth": 2,
-		"lineEnding": "lf",
-		"lineWidth": 100,
-		"attributePosition": "auto"
+		"indentStyle": "space"
 	},
 	"linter": {
-		"enabled": true,
 		"rules": {
-			"recommended": true,
 			"style": {
 				"useNodejsImportProtocol": "off"
 			},
@@ -31,15 +18,7 @@
 	},
 	"javascript": {
 		"formatter": {
-			"jsxQuoteStyle": "double",
-			"quoteProperties": "asNeeded",
-			"trailingCommas": "es5",
-			"semicolons": "always",
-			"arrowParentheses": "always",
-			"bracketSpacing": true,
-			"bracketSameLine": false,
-			"quoteStyle": "double",
-			"attributePosition": "auto"
+			"trailingCommas": "es5"
 		}
 	}
 }
