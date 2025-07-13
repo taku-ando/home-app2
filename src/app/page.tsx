@@ -1,7 +1,8 @@
 import Image from "next/image";
-import { auth, signIn } from "@/auth";
+import { auth } from "@/auth";
 import HealthChecker from "@/components/HealthChecker";
 import { Button } from "@/components/ui/button";
+import { handleSignIn } from "@/lib/auth-actions";
 
 export default async function Home() {
   const session = await auth();
@@ -62,12 +63,7 @@ export default async function Home() {
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         {session === null && (
           <div>
-            <form
-              action={async () => {
-                "use server";
-                await signIn("google");
-              }}
-            >
+            <form action={handleSignIn}>
               <Button type="submit">Signin with Google</Button>
             </form>
           </div>
