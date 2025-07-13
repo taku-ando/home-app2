@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { signIn, auth, signOut } from "@/auth"
+import { auth, signIn, signOut } from "@/auth";
 
 export default async function Home() {
   const session = await auth();

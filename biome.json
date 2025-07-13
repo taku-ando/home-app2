@@ -1,0 +1,26 @@
+{
+	"$schema": "https://raw.githubusercontent.com/biomejs/biome/refs/tags/%40biomejs/biome%402.1.1/packages/%40biomejs/biome/configuration_schema.json",
+	"vcs": {
+		"useIgnoreFile": true,
+		"clientKind": "git",
+		"defaultBranch": "main"
+	},
+	"formatter": {
+		"indentStyle": "space"
+	},
+	"linter": {
+		"rules": {
+			"style": {
+				"useNodejsImportProtocol": "off"
+			},
+			"suspicious": {
+				"noExplicitAny": "warn"
+			}
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"trailingCommas": "es5"
+		}
+	}
+}
