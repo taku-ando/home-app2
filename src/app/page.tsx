@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { auth, signIn, signOut } from "@/auth";
+import { auth, signIn } from "@/auth";
 import HealthChecker from "@/components/HealthChecker";
 import { Button } from "@/components/ui/button";
 
@@ -60,19 +60,7 @@ export default async function Home() {
         </div>
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        {session !== null ? (
-          <div>
-            <span>{session.user?.name}</span>
-            <form
-              action={async () => {
-                "use server";
-                await signOut();
-              }}
-            >
-              <Button type="submit">Signout</Button>
-            </form>
-          </div>
-        ) : (
+        {session === null && (
           <div>
             <form
               action={async () => {
