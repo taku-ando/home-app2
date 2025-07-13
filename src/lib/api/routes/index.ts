@@ -12,3 +12,4 @@ apiRoutes.route("/health", healthRoutes);
 // apiRoutes.route('/posts', postRoutes)
 
 export default apiRoutes;
+export type ApiRoutesType = typeof apiRoutes;
