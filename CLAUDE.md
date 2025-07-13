@@ -1,6 +1,7 @@
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+やり取りやコメントは基本的に日本語を使用してください。
 
 ## プロジェクト概要
 
