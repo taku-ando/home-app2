@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, LogOut, Menu, Settings, User } from "lucide-react";
+import { Home, LogOut, Logs, Menu, Settings, User } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,6 +28,7 @@ export default function SideMenu({ className, session }: SideMenuProps) {
 
   const menuItems = [
     { icon: Home, label: "ホーム", href: "/" },
+    { icon: Logs, label: "アクティビティログ", href: "/activity-log" },
     { icon: User, label: "プロフィール", href: "/profile" },
     { icon: Settings, label: "設定", href: "/settings" },
   ];

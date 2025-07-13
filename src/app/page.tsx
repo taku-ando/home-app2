@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { auth } from "@/auth";
 import HealthChecker from "@/components/HealthChecker";
 import { Button } from "@/components/ui/button";
