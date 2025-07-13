@@ -48,7 +48,10 @@ export function jsonError(
   code?: string,
   details?: Record<string, unknown>
 ) {
-  return c.json(createErrorResponse(error, message, code, details), status as 500);
+  return c.json(
+    createErrorResponse(error, message, code, details),
+    status as 500
+  );
 }
 
 // バリデーションエラーのヘルパー
@@ -58,7 +61,12 @@ export function validationError(
   details?: Record<string, unknown>
 ) {
   return c.json(
-    createErrorResponse("ValidationError", message, "VALIDATION_ERROR", details),
+    createErrorResponse(
+      "ValidationError",
+      message,
+      "VALIDATION_ERROR",
+      details
+    ),
     400
   );
 }
