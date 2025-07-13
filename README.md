@@ -38,8 +38,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 ## Database Migration
 
 ```
-npx drizzle-kit generate --out drizzle/migrations --schema src/lib/db/schema.ts --dialect sqlite
+pnpm drizzle-kit generate --out drizzle/migrations --schema src/lib/db/schema.ts --dialect sqlite
 
-npx wrangler d1 migrations apply home-app2 --local
-npx wrangler d1 migrations apply home-app2 --remote
+pnpm wrangler d1 migrations apply home-app2 --local
+pnpm wrangler d1 migrations apply home-app2 --remote
 ```
