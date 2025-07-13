@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
-import { apiRoutes } from "./api/routes";
+import { apiRoutes } from "./routes";
 
 // Cloudflare Workers環境用の型定義
 type Bindings = Record<string, unknown>;
@@ -52,3 +52,4 @@ app.notFound((c) => {
 });
 
 export default app;
+export type AppType = typeof apiRoutes;
