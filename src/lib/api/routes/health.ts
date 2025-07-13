@@ -1,5 +1,6 @@
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { Hono } from "hono";
-import { getD1Sesstion, getDb } from "../../db";
+import { getDb } from "../../db";
 import { families } from "../../db/schema";
 import type {
   DbHealthResponse,
@@ -7,7 +8,6 @@ import type {
   HealthResponse,
 } from "../types";
 import { handleError, jsonSuccess } from "../utils";
-import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 // ヘルスチェック用のルーター
 export const healthRoutes = new Hono();

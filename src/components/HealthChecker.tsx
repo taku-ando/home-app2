@@ -21,7 +21,7 @@ export default function HealthChecker() {
     } catch (error) {
       console.error("Health Check DB Error:", error);
     }
-  }
+  };
 
   return (
     <>
