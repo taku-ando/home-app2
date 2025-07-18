@@ -9,7 +9,7 @@ export default function ProfilePage() {
   ];
 
   return (
-    <div className="container h-full mx-auto px-2 py-8 space-y-2 bg-neutral-50">
+    <div className="container h-full mx-auto px-2 py-8 space-y-2 bg-sky-50">
       {activities.map((activity) => (
         <ActivityCard
           key={activity.id}
