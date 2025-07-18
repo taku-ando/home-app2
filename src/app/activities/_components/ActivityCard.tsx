@@ -1,33 +1,51 @@
-import { ChevronRight, CircleCheck, Clock3 } from "lucide-react";
-import Link from "next/link";
 import type { FC } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 export type Props = {
   id: number;
   title: string;
+  emoji: string;
+  lastDate: number;
+  tags: string[];
+  recordAction: (id: number) => Promise<void>;
 };
 
-export const ActivityCard: FC<Props> = ({ id, title }) => {
+export const ActivityCard: FC<Props> = ({
+  id,
+  title,
+  emoji,
+  lastDate,
+  tags = [],
+  recordAction,
+}) => {
   return (
-    <div className="bg-white py-3 px-3 rounded-md shadow-xs flex items-center gap-3">
-      <div className="size-10 rounded-full bg-slate-100 text-center">
-        <span className="text-2xl">🚗</span>
-      </div>
-      <div className="mr-auto">
-        <div>
-          <span>{title}</span>
+    <div className="bg-white rounded-2xl p-4 shadow-sm border-l-4">
+      <div className="flex justify-between items-start mb-3">
+        <div className="flex items-center gap-2 flex-1">
+          <span className="text-2xl">{emoji}</span>
+          <span className="text-base font-semibold text-slate-800">
+            {title}
+          </span>
+          <span className="text-sm text-slate-600 ml-auto">
+            前回から{lastDate}日経過
+          </span>
         </div>
-        <div className="inline-flex items-center gap-1 size text-sm text-slate-400">
-          <Clock3 size="14px" />
-          <span>2025/12/31・10日経過</span>
+      </div>
+      {tags.length > 0 && (
+        <div className="flex gap-2">
+          {tags.map((tag) => (
+            <Badge key={tag} variant="outline">
+              {tag}
+            </Badge>
+          ))}
         </div>
+      )}
+      <div className="flex justify-end">
+        <form action={recordAction.bind(null, id)}>
+          <Button type="submit">記録する</Button>
+        </form>
       </div>
-      <div>
-        <CircleCheck className="size-8 text-green-500" />
-      </div>
-      <Link href={`/activity-log/${id}`}>
-        <ChevronRight className="size-10 text-slate-400" />
-      </Link>
     </div>
   );
 };

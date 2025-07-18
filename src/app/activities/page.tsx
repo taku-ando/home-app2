@@ -1,21 +1,29 @@
-import { ActivityCard } from "./_components/ActivityCard";
+import Link from "next/link";
+import {
+  ActivityCard,
+  type Props as ActivityCardProps,
+} from "./_components/ActivityCard";
+
+async function recordActivity(id: number) {
+  "use server";
+  console.log("Activity recorded:", id);
+  // ここに実際の記録処理を追加
+}
 
 export default function ProfilePage() {
-  const activities = [
-    { id: 1, title: "洗車" },
-    { id: 2, title: "洗車" },
-    { id: 3, title: "洗車" },
-    { id: 4, title: "洗車" },
+  const activities: Omit<ActivityCardProps, "recordAction">[] = [
+    { id: 1, title: "洗車", emoji: "🚗", lastDate: 1, tags: ["test"] },
+    { id: 2, title: "洗車", emoji: "🚗", lastDate: 1, tags: ["test", "タグ"] },
+    { id: 3, title: "洗車", emoji: "🚗", lastDate: 1, tags: [] },
+    { id: 4, title: "洗車", emoji: "🚗", lastDate: 1, tags: [] },
   ];
 
   return (
-    <div className="container h-full mx-auto px-2 py-8 space-y-2 bg-sky-50">
+    <div className="flex flex-col container h-full px-2 py-8 space-y-2 bg-sky-50">
       {activities.map((activity) => (
-        <ActivityCard
-          key={activity.id}
-          id={activity.id}
-          title={activity.title}
-        />
+        <Link key={activity.id} href={`/activities/${activity.id}`}>
+          <ActivityCard {...activity} recordAction={recordActivity} />
+        </Link>
       ))}
     </div>
   );
