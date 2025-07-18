@@ -28,7 +28,7 @@ export default function SideMenu({ className, session }: SideMenuProps) {
 
   const menuItems = [
     { icon: Home, label: "ホーム", href: "/" },
-    { icon: Logs, label: "アクティビティログ", href: "/activity-log" },
+    { icon: Logs, label: "アクティビティ", href: "/activities" },
     { icon: User, label: "プロフィール", href: "/profile" },
     { icon: Settings, label: "設定", href: "/settings" },
   ];

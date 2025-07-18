@@ -1,6 +1,13 @@
 import { ChevronRight, CircleCheck, Clock3 } from "lucide-react";
+import Link from "next/link";
+import type { FC } from "react";
 
-export const ActivityCard = () => {
+export type Props = {
+  id: number;
+  title: string;
+};
+
+export const ActivityCard: FC<Props> = ({ id, title }) => {
   return (
     <div className="bg-white py-3 px-3 rounded-md shadow-xs flex items-center gap-3">
       <div className="size-10 rounded-full bg-slate-100 text-center">
@@ -8,7 +15,7 @@ export const ActivityCard = () => {
       </div>
       <div className="mr-auto">
         <div>
-          <span>洗車</span>
+          <span>{title}</span>
         </div>
         <div className="inline-flex items-center gap-1 size text-sm text-slate-400">
           <Clock3 size="14px" />
@@ -18,9 +25,9 @@ export const ActivityCard = () => {
       <div>
         <CircleCheck className="size-8 text-green-500" />
       </div>
-      <div>
+      <Link href={`/activity-log/${id}`}>
         <ChevronRight className="size-10 text-slate-400" />
-      </div>
+      </Link>
     </div>
   );
 };
