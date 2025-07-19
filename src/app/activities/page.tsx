@@ -18,7 +18,12 @@ type PageProps = {
 
 export default async function ProfilePage({ searchParams }: PageProps) {
   const params = await searchParams;
-  const selectedTag = typeof params.tag === "string" ? params.tag : undefined;
+
+  // 複数タグフィルターに対応
+  const selectedTags =
+    typeof params.tags === "string"
+      ? params.tags.split(",").filter(Boolean)
+      : [];
 
   const activities: Omit<ActivityCardProps, "recordAction">[] = [
     { id: 1, title: "洗車", emoji: "🚗", lastDate: 1, tags: ["test"] },
@@ -32,16 +37,22 @@ export default async function ProfilePage({ searchParams }: PageProps) {
     new Set(activities.flatMap((activity) => activity.tags))
   ).filter(Boolean);
 
-  // フィルター処理
-  const filteredActivities = selectedTag
-    ? activities.filter((activity) => activity.tags.includes(selectedTag))
-    : activities;
+  // フィルター処理（複数タグの場合は少なくとも一つのタグを含む）
+  const filteredActivities =
+    selectedTags.length > 0
+      ? activities.filter((activity) =>
+          selectedTags.some((tag) => activity.tags.includes(tag))
+        )
+      : activities;
 
   return (
     <div className="flex flex-col px-2 py-4 space-y-2">
       <section>
         <div className="flex justify-end gap-2">
-          <FilterSheet availableTags={availableTags} />
+          <FilterSheet
+            availableTags={availableTags}
+            hasActiveFilter={selectedTags.length > 0}
+          />
           <Button size="sm" variant="outline">
             <ArrowDownWideNarrow />
             期限順
