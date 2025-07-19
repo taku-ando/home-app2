@@ -30,7 +30,7 @@ export default async function ProfilePage({ searchParams }: PageProps) {
     : activities;
 
   return (
-    <div className="flex flex-col px-2 py-8 space-y-2">
+    <div className="flex flex-col px-2 py-4 space-y-2">
       {selectedTag && (
         <div className="mb-4 p-3 bg-blue-50 rounded-lg border">
           <div className="flex items-center justify-between">
