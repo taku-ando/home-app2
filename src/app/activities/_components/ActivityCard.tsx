@@ -1,6 +1,8 @@
+import Link from "next/link";
 import type { FC } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ActivityCardButton } from "./ActivityCardSubmitButton";
 
 export type Props = {
   id: number;
@@ -35,16 +37,24 @@ export const ActivityCard: FC<Props> = ({
       {tags.length > 0 && (
         <div className="flex gap-2">
           {tags.map((tag) => (
-            <Badge key={tag} variant="outline">
-              {tag}
-            </Badge>
+            <Link key={tag} href={`/activities?tag=${encodeURIComponent(tag)}`}>
+              <Badge
+                variant="outline"
+                className="cursor-pointer hover:bg-slate-100"
+              >
+                {tag}
+              </Badge>
+            </Link>
           ))}
         </div>
       )}
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-2">
         <form action={recordAction.bind(null, id)}>
-          <Button type="submit">記録する</Button>
+          <ActivityCardButton />
         </form>
+        <Button asChild>
+          <Link href={`/activities/${id}`}>詳細</Link>
+        </Button>
       </div>
     </div>
   );
