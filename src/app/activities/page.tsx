@@ -46,13 +46,15 @@ export default async function ProfilePage({ searchParams }: PageProps) {
           </div>
         </div>
       )}
-      {filteredActivities.map((activity) => (
-        <ActivityCard
-          key={activity.id}
-          {...activity}
-          recordAction={recordActivity}
-        />
-      ))}
+      <section className="flex flex-col gap-4">
+        {filteredActivities.map((activity) => (
+          <ActivityCard
+            key={activity.id}
+            {...activity}
+            recordAction={recordActivity}
+          />
+        ))}
+      </section>
     </div>
   );
 }

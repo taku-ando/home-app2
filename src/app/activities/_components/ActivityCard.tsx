@@ -52,7 +52,7 @@ export const ActivityCard: FC<Props> = ({
         <form action={recordAction.bind(null, id)}>
           <ActivityCardButton />
         </form>
-        <Button asChild>
+        <Button asChild variant="outline">
           <Link href={`/activities/${id}`}>詳細</Link>
         </Button>
       </div>

@@ -5,7 +5,11 @@ import { Button } from "@/components/ui/button";
 
 export const ActivityCardButton: FC = () => {
   return (
-    <Button type="submit" onClick={(e) => e.stopPropagation()}>
+    <Button
+      type="submit"
+      className="bg-cyan-800"
+      onClick={(e) => e.stopPropagation()}
+    >
       記録する
     </Button>
   );
