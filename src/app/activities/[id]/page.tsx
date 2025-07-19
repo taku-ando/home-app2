@@ -3,9 +3,9 @@ import { Badge } from "@/components/ui/badge";
 import { ActivityHistoryCard } from "./_components/ActivityHistoryCard";
 
 export type Props = {
-  params: {
-    id: number;
-  };
+  params: Promise<{
+    id: string;
+  }>;
 };
 
 export default async function Page({ params }: Props) {
