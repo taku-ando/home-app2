@@ -1,8 +1,10 @@
-import Link from "next/link";
+import { ArrowDownWideNarrow } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   ActivityCard,
   type Props as ActivityCardProps,
 } from "./_components/ActivityCard";
+import { FilterSheet } from "./_components/FilterSheet";
 
 async function recordActivity(id: number) {
   "use server";
@@ -25,27 +27,27 @@ export default async function ProfilePage({ searchParams }: PageProps) {
     { id: 4, title: "洗車", emoji: "🚗", lastDate: 1, tags: [] },
   ];
 
+  // 利用可能なタグを抽出
+  const availableTags = Array.from(
+    new Set(activities.flatMap((activity) => activity.tags))
+  ).filter(Boolean);
+
+  // フィルター処理
   const filteredActivities = selectedTag
     ? activities.filter((activity) => activity.tags.includes(selectedTag))
     : activities;
 
   return (
     <div className="flex flex-col px-2 py-4 space-y-2">
-      {selectedTag && (
-        <div className="mb-4 p-3 bg-blue-50 rounded-lg border">
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-blue-700">
-              タグ「{selectedTag}」でフィルタ中
-            </span>
-            <Link
-              href="/activities"
-              className="text-sm text-blue-600 hover:text-blue-800 underline"
-            >
-              フィルタを解除
-            </Link>
-          </div>
+      <section>
+        <div className="flex justify-end gap-2">
+          <FilterSheet availableTags={availableTags} />
+          <Button size="sm" variant="outline">
+            <ArrowDownWideNarrow />
+            期限順
+          </Button>
         </div>
-      )}
+      </section>
       <section className="flex flex-col gap-4">
         {filteredActivities.map((activity) => (
           <ActivityCard
