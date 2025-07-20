@@ -129,6 +129,20 @@ export function FilterSheet({
                   良好
                 </Badge>
               </label>
+              <label className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={selectedPriorities.none}
+                  onChange={() => togglePriority("none")}
+                  className="rounded"
+                />
+                <Badge
+                  variant="outline"
+                  className="bg-neutral-300 border-neutral-600 text-neutral-900"
+                >
+                  期限なし
+                </Badge>
+              </label>
             </div>
           </div>
 

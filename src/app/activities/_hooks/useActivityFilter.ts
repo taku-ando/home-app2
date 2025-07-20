@@ -5,6 +5,7 @@ export type PrioritySelection = {
   overdue: boolean;
   warning: boolean;
   good: boolean;
+  none: boolean;
 };
 
 export type UseActivityFilterResult = {
@@ -32,6 +33,7 @@ export function useActivityFilter(): UseActivityFilterResult {
       overdue: true,
       warning: true,
       good: true,
+      none: true,
     });
 
   const [searchName, setSearchName] = useState("");
@@ -69,6 +71,7 @@ export function useActivityFilter(): UseActivityFilterResult {
       overdue: true,
       warning: true,
       good: true,
+      none: true,
     });
     const params = new URLSearchParams(searchParams.toString());
     params.delete("tags");
