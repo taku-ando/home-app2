@@ -1,6 +1,6 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -41,8 +41,8 @@ export function ActivityForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [noDeadline, setNoDeadline] = useState(initialData?.deadline === null);
 
-  const form = useForm({
-    resolver: zodResolver(activitySchema),
+  const form = useForm<ActivityFormData>({
+    resolver: standardSchemaResolver(activitySchema),
     defaultValues: {
       emoji: initialData?.emoji || "",
       name: initialData?.name || "",
