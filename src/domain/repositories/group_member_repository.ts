@@ -19,4 +19,5 @@ export interface GroupMemberRepository {
   ): Promise<GroupMember | null>;
   delete(id: number): Promise<boolean>;
   deleteByGroupAndUser(groupId: number, userId: number): Promise<boolean>;
+  isUserInGroup(userId: number, groupId: number): Promise<boolean>;
 }

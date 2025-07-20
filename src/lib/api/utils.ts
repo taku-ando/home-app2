@@ -1,6 +1,7 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import type { Context } from "hono";
 import { getDb } from "../db";
+import { checkGroupAuth, type GroupAuthResult } from "../utils/group-auth";
 import { DIContainer } from "./di/container";
 import { type ApiErrorResponse, type ApiResponse, HTTP_STATUS } from "./types";
 
@@ -145,5 +146,48 @@ export function getDbContainer(c: Context):
   return {
     success: true,
     data: { db, container },
+  };
+}
+
+/**
+ * データベース接続とグループ認証を同時に行うヘルパー関数
+ */
+export async function getDbContainerWithGroupAuth(c: Context): Promise<
+  | { success: false; error: Response }
+  | {
+      success: true;
+      data: {
+        db: ReturnType<typeof getDb>;
+        container: DIContainer;
+        groupAuth: GroupAuthResult;
+      };
+    }
+> {
+  const dbResult = getDbContainer(c);
+  if (!dbResult.success) {
+    return dbResult;
+  }
+
+  const { db, container } = dbResult.data;
+
+  // グループ認証チェック
+  const groupAuth = await checkGroupAuth(db);
+  if (!groupAuth.isAuthorized) {
+    return {
+      success: false,
+      error: c.json(
+        {
+          success: false,
+          error: "GroupAuthorizationError",
+          message: groupAuth.error || "Group authorization failed",
+        },
+        403
+      ),
+    };
+  }
+
+  return {
+    success: true,
+    data: { db, container, groupAuth },
   };
 }

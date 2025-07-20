@@ -1,5 +1,14 @@
 import { Hono } from "hono";
-import { getDbContainer, handleError, jsonSuccess } from "../utils";
+import { auth } from "../../../auth";
+import { GroupMemberRepositoryImpl } from "../../../infrastructure/repositories/group_member_repository_impl";
+import { setSelectedGroupId } from "../../utils/cookie";
+import {
+  authError,
+  getDbContainer,
+  handleError,
+  jsonSuccess,
+  validationError,
+} from "../utils";
 
 export const groupsRoutes = new Hono()
   // GET /api/v1/groups - 全グループ取得（アクティブのみ）
@@ -301,6 +310,104 @@ export const groupsRoutes = new Hono()
         { removed: true },
         "Member removed from group successfully"
       );
+    } catch (error) {
+      return handleError(c, error);
+    }
+  })
+
+  // POST /api/v1/groups/switch - グループ切り替え
+  .post("/switch", async (c) => {
+    try {
+      const dbResult = getDbContainer(c);
+      if (!dbResult.success) {
+        return dbResult.error;
+      }
+      const { db } = dbResult.data;
+
+      const session = await auth();
+      if (!session?.user?.id) {
+        return authError(c, "User not authenticated");
+      }
+
+      const userId = parseInt(session.user.id);
+      const body = await c.req.json();
+      const { groupId } = body;
+
+      if (!groupId || Number.isNaN(parseInt(groupId))) {
+        return validationError(c, "Valid group ID is required");
+      }
+
+      const targetGroupId = parseInt(groupId);
+
+      // ユーザーがそのグループに所属しているかチェック
+      const groupMemberRepository = new GroupMemberRepositoryImpl(db);
+      const isUserInGroup = await groupMemberRepository.isUserInGroup(
+        userId,
+        targetGroupId
+      );
+
+      if (!isUserInGroup) {
+        return c.json(
+          {
+            success: false,
+            error: "Forbidden",
+            message: "You are not a member of the specified group",
+          },
+          403
+        );
+      }
+
+      // cookieに新しいグループIDを設定
+      await setSelectedGroupId(targetGroupId);
+
+      return jsonSuccess(
+        c,
+        { groupId: targetGroupId },
+        "Group switched successfully"
+      );
+    } catch (error) {
+      return handleError(c, error);
+    }
+  })
+
+  // GET /api/v1/groups/user/:userId - ユーザーの所属グループ一覧取得
+  .get("/user/:userId", async (c) => {
+    try {
+      const dbResult = getDbContainer(c);
+      if (!dbResult.success) {
+        return dbResult.error;
+      }
+      const { db } = dbResult.data;
+
+      const session = await auth();
+      if (!session?.user?.id) {
+        return authError(c, "User not authenticated");
+      }
+
+      const requestedUserId = parseInt(c.req.param("userId"));
+      const currentUserId = parseInt(session.user.id);
+
+      if (Number.isNaN(requestedUserId)) {
+        return validationError(c, "Invalid user ID");
+      }
+
+      // 自分のグループのみ取得可能
+      if (requestedUserId !== currentUserId) {
+        return c.json(
+          {
+            success: false,
+            error: "Forbidden",
+            message: "You can only view your own groups",
+          },
+          403
+        );
+      }
+
+      const groupMemberRepository = new GroupMemberRepositoryImpl(db);
+      const userGroups =
+        await groupMemberRepository.findByUserId(currentUserId);
+
+      return jsonSuccess(c, userGroups, "User groups retrieved successfully");
     } catch (error) {
       return handleError(c, error);
     }

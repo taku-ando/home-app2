@@ -96,4 +96,15 @@ export class GroupMemberRepositoryImpl implements GroupMemberRepository {
       .returning();
     return result.length > 0;
   }
+
+  async isUserInGroup(userId: number, groupId: number): Promise<boolean> {
+    const result = await this.db
+      .select({ id: groupMembers.id })
+      .from(groupMembers)
+      .where(
+        and(eq(groupMembers.userId, userId), eq(groupMembers.groupId, groupId))
+      )
+      .limit(1);
+    return result.length > 0;
+  }
 }

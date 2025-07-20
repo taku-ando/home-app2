@@ -6,6 +6,7 @@ import { GroupMemberRepositoryImpl } from "./infrastructure/repositories/group_m
 import { InvitationRepositoryImpl } from "./infrastructure/repositories/invitation_repository_impl";
 import { UserRepositoryImpl } from "./infrastructure/repositories/user_repository_impl";
 import { getDb } from "./lib/db";
+import { getSelectedGroupId, setSelectedGroupId } from "./lib/utils/cookie";
 import { AuthUseCase } from "./usecases/auth_usecase";
 
 declare module "next-auth" {
@@ -65,6 +66,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           // ユーザー情報をセッションで使用するために設定
           user.id = authenticatedUser.id.toString();
           user.googleId = authenticatedUser.googleId;
+
+          // デフォルトグループの設定
+          const currentGroupId = await getSelectedGroupId();
+          if (!currentGroupId) {
+            // まだグループが選択されていない場合、ユーザーの最初のグループを設定
+            const userGroups = await groupMemberRepository.findByUserId(
+              authenticatedUser.id
+            );
+            if (userGroups.length > 0) {
+              await setSelectedGroupId(userGroups[0].groupId);
+            }
+          }
 
           return true;
         } catch (error) {

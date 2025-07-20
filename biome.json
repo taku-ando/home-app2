@@ -17,7 +17,8 @@
 				"useNodejsImportProtocol": "off"
 			},
 			"suspicious": {
-				"noExplicitAny": "warn"
+				"noExplicitAny": "warn",
+				"noDocumentCookie": "off"
 			}
 		}
 	},
