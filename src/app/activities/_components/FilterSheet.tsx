@@ -1,8 +1,6 @@
 "use client";
 
 import { Search } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,6 +12,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { useActivityFilter } from "../_hooks/useActivityFilter";
 
 interface FilterSheetProps {
   availableTags: string[];
@@ -24,64 +23,16 @@ export function FilterSheet({
   availableTags,
   hasActiveFilter = false,
 }: FilterSheetProps) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  // 複数タグ選択に対応
-  const [selectedTags, setSelectedTags] = useState<string[]>(() => {
-    const tagParam = searchParams.get("tags");
-    return tagParam ? tagParam.split(",") : [];
-  });
-
-  // 優先度の選択状態（デフォルトはすべて選択）
-  const [selectedPriorities, setSelectedPriorities] = useState({
-    overdue: true,
-    warning: true,
-    good: true,
-  });
-
-  // 名前検索
-  const [searchName, setSearchName] = useState("");
-
-  const toggleTag = (tag: string) => {
-    setSelectedTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-    );
-  };
-
-  const togglePriority = (priority: keyof typeof selectedPriorities) => {
-    setSelectedPriorities((prev) => ({
-      ...prev,
-      [priority]: !prev[priority],
-    }));
-  };
-
-  const applyFilter = () => {
-    const params = new URLSearchParams(searchParams.toString());
-
-    if (selectedTags.length > 0) {
-      params.set("tags", selectedTags.join(","));
-    } else {
-      params.delete("tags");
-    }
-
-    const queryString = params.toString();
-    router.push(`/activities${queryString ? `?${queryString}` : ""}`);
-  };
-
-  const resetFilter = () => {
-    setSearchName("");
-    setSelectedTags([]);
-    setSelectedPriorities({
-      overdue: true,
-      warning: true,
-      good: true,
-    });
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete("tags");
-    const queryString = params.toString();
-    router.push(`/activities${queryString ? `?${queryString}` : ""}`);
-  };
+  const {
+    selectedTags,
+    selectedPriorities,
+    searchName,
+    toggleTag,
+    togglePriority,
+    setSearchName,
+    applyFilter,
+    resetFilter,
+  } = useActivityFilter();
 
   return (
     <Sheet>
