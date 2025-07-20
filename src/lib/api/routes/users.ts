@@ -10,7 +10,7 @@ export const usersRoutes = new Hono()
         return dbResult.error;
       }
 
-      const userUseCase = dbResult.container.getUserUseCase();
+      const userUseCase = dbResult.data.container.getUserUseCase();
 
       const users = await userUseCase.getAllUsers();
       return jsonSuccess(c, users, "Users retrieved successfully");
@@ -39,7 +39,7 @@ export const usersRoutes = new Hono()
         );
       }
 
-      const userUseCase = dbResult.container.getUserUseCase();
+      const userUseCase = dbResult.data.container.getUserUseCase();
 
       const user = await userUseCase.getUserById(id);
       if (!user) {
@@ -79,7 +79,7 @@ export const usersRoutes = new Hono()
         );
       }
 
-      const groupUseCase = dbResult.container.getGroupUseCase();
+      const groupUseCase = dbResult.data.container.getGroupUseCase();
 
       const userGroups = await groupUseCase.getUserGroups(id);
       return jsonSuccess(c, userGroups, "User groups retrieved successfully");
@@ -122,7 +122,7 @@ export const usersRoutes = new Hono()
         );
       }
 
-      const userUseCase = dbResult.container.getUserUseCase();
+      const userUseCase = dbResult.data.container.getUserUseCase();
 
       const updatedUser = await userUseCase.updateUser(id, { name, email });
       if (!updatedUser) {
@@ -162,7 +162,7 @@ export const usersRoutes = new Hono()
         );
       }
 
-      const userUseCase = dbResult.container.getUserUseCase();
+      const userUseCase = dbResult.data.container.getUserUseCase();
 
       const deleted = await userUseCase.deleteUser(id);
       if (!deleted) {

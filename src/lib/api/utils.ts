@@ -118,11 +118,12 @@ export function handleError(c: Context, error: unknown) {
 }
 
 // データベース接続とDIコンテナ取得のヘルパー関数
-export function getDbContainer(
-  c: Context
-):
+export function getDbContainer(c: Context):
   | { success: false; error: Response }
-  | { success: true; container: DIContainer } {
+  | {
+      success: true;
+      data: { db: ReturnType<typeof getDb>; container: DIContainer };
+    } {
   const { env } = getCloudflareContext();
   if (!env.HOME_APP2_DB) {
     return {
@@ -143,6 +144,6 @@ export function getDbContainer(
 
   return {
     success: true,
-    container,
+    data: { db, container },
   };
 }

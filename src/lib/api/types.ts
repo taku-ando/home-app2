@@ -125,16 +125,33 @@ export interface GroupMemberResponse {
   id: number;
   groupId: number;
   userId: number;
-  role: "admin" | "member";
+  role: "system" | "admin" | "member";
   joinedAt: string;
 }
 
 export interface CreateGroupMemberRequest {
   groupId: number;
   userId: number;
-  role?: "admin" | "member";
+  role?: "system" | "admin" | "member";
 }
 
 export interface UpdateGroupMemberRequest {
-  role?: "admin" | "member";
+  role?: "system" | "admin" | "member";
+}
+
+// 招待関連のAPI型定義
+export interface InvitationApiResponse {
+  id: number;
+  email: string;
+  groupId: number;
+  invitedBy: number;
+  status: "pending" | "accepted" | "declined";
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface InvitationApiRequest {
+  email: string;
+  groupId: number;
+  invitedBy: number;
 }

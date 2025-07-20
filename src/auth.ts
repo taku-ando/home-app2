@@ -2,6 +2,8 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 import NextAuth, { type DefaultSession } from "next-auth";
 import "next-auth/jwt";
 import Google from "next-auth/providers/google";
+import { GroupMemberRepositoryImpl } from "./infrastructure/repositories/group_member_repository_impl";
+import { InvitationRepositoryImpl } from "./infrastructure/repositories/invitation_repository_impl";
 import { UserRepositoryImpl } from "./infrastructure/repositories/user_repository_impl";
 import { getDb } from "./lib/db";
 import { AuthUseCase } from "./usecases/auth_usecase";
@@ -41,9 +43,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           const db = getDb(env.HOME_APP2_DB);
           const userRepository = new UserRepositoryImpl(db);
-          const authUseCase = new AuthUseCase(userRepository);
+          const invitationRepository = new InvitationRepositoryImpl(db);
+          const groupMemberRepository = new GroupMemberRepositoryImpl(db);
+          const authUseCase = new AuthUseCase(
+            userRepository,
+            invitationRepository,
+            groupMemberRepository
+          );
 
-          // Google認証時にユーザー照合・作成
           if (!profile.sub || !profile.email || !profile.name) {
             console.error("Missing required profile information");
             return false;

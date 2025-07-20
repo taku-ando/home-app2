@@ -10,7 +10,7 @@ export const groupsRoutes = new Hono()
         return dbResult.error;
       }
 
-      const groupUseCase = dbResult.container.getGroupUseCase();
+      const groupUseCase = dbResult.data.container.getGroupUseCase();
 
       const groups = await groupUseCase.getActiveGroups();
       return jsonSuccess(c, groups, "Active groups retrieved successfully");
@@ -41,7 +41,7 @@ export const groupsRoutes = new Hono()
         );
       }
 
-      const groupUseCase = dbResult.container.getGroupUseCase();
+      const groupUseCase = dbResult.data.container.getGroupUseCase();
 
       const group = await groupUseCase.createGroup({ name, createdBy });
       return jsonSuccess(c, group, "Group created successfully", 201);
@@ -70,7 +70,7 @@ export const groupsRoutes = new Hono()
         );
       }
 
-      const groupUseCase = dbResult.container.getGroupUseCase();
+      const groupUseCase = dbResult.data.container.getGroupUseCase();
 
       const group = await groupUseCase.getGroupById(id);
       if (!group) {
@@ -124,7 +124,7 @@ export const groupsRoutes = new Hono()
         );
       }
 
-      const groupUseCase = dbResult.container.getGroupUseCase();
+      const groupUseCase = dbResult.data.container.getGroupUseCase();
 
       const updatedGroup = await groupUseCase.updateGroup(id, { name });
       if (!updatedGroup) {
@@ -164,7 +164,7 @@ export const groupsRoutes = new Hono()
         );
       }
 
-      const groupUseCase = dbResult.container.getGroupUseCase();
+      const groupUseCase = dbResult.data.container.getGroupUseCase();
 
       const deleted = await groupUseCase.deleteGroup(id);
       if (!deleted) {
@@ -204,7 +204,7 @@ export const groupsRoutes = new Hono()
         );
       }
 
-      const groupUseCase = dbResult.container.getGroupUseCase();
+      const groupUseCase = dbResult.data.container.getGroupUseCase();
 
       const members = await groupUseCase.getGroupMembers(id);
       return jsonSuccess(c, members, "Group members retrieved successfully");
@@ -247,7 +247,7 @@ export const groupsRoutes = new Hono()
         );
       }
 
-      const groupUseCase = dbResult.container.getGroupUseCase();
+      const groupUseCase = dbResult.data.container.getGroupUseCase();
 
       const member = await groupUseCase.addGroupMember({
         groupId,
@@ -282,7 +282,7 @@ export const groupsRoutes = new Hono()
         );
       }
 
-      const groupUseCase = dbResult.container.getGroupUseCase();
+      const groupUseCase = dbResult.data.container.getGroupUseCase();
 
       const removed = await groupUseCase.removeGroupMember(groupId, userId);
       if (!removed) {

@@ -1,4 +1,4 @@
-export type GroupMemberRole = "admin" | "member";
+export type GroupMemberRole = "system" | "admin" | "member";
 
 export interface GroupMember {
   id: number;

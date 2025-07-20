@@ -39,7 +39,7 @@ export const groupMembers = sqliteTable(
     userId: integer("user_id")
       .notNull()
       .references(() => users.id),
-    role: text("role", { enum: ["admin", "member"] })
+    role: text("role", { enum: ["system", "admin", "member"] })
       .notNull()
       .default("member"),
     joinedAt: integer("joined_at", { mode: "timestamp" })
@@ -50,6 +50,26 @@ export const groupMembers = sqliteTable(
     unq: unique().on(table.groupId, table.userId),
   })
 );
+
+export const invitations = sqliteTable("invitations", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  email: text("email").unique().notNull(),
+  groupId: integer("group_id")
+    .notNull()
+    .references(() => groups.id),
+  invitedBy: integer("invited_by")
+    .notNull()
+    .references(() => users.id),
+  status: text("status", { enum: ["pending", "accepted"] })
+    .notNull()
+    .default("pending"),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .$default(() => new Date()),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .notNull()
+    .$default(() => new Date()),
+});
 
 export const families = sqliteTable("families", {
   id: integer("id").primaryKey({ autoIncrement: true }),
@@ -77,6 +97,17 @@ export const groupMembersRelations = relations(groupMembers, ({ one }) => ({
   }),
   user: one(users, {
     fields: [groupMembers.userId],
+    references: [users.id],
+  }),
+}));
+
+export const invitationsRelations = relations(invitations, ({ one }) => ({
+  group: one(groups, {
+    fields: [invitations.groupId],
+    references: [groups.id],
+  }),
+  inviter: one(users, {
+    fields: [invitations.invitedBy],
     references: [users.id],
   }),
 }));
