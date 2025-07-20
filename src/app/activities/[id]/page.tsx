@@ -1,5 +1,7 @@
 import { Calendar, Share, Tags, Timer } from "lucide-react";
+import { redirect } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
+import { ActionMenu } from "./_components/ActionMenu";
 import { ActivityHistoryCard } from "./_components/ActivityHistoryCard";
 
 export type Props = {
@@ -7,6 +9,17 @@ export type Props = {
     id: string;
   }>;
 };
+
+async function deleteActivity(id: string) {
+  "use server";
+
+  console.log("アクティビティ削除:", { id });
+
+  // TODO: 実際のAPI削除処理をここに追加
+  // await deleteActivityAPI(id);
+
+  redirect("/activities");
+}
 
 export default async function Page({ params }: Props) {
   const { id } = await params;
@@ -20,11 +33,14 @@ export default async function Page({ params }: Props) {
   return (
     <div className="flex flex-col gap-6 px-2 py-4 space-y-2">
       <section className="flex flex-col gap-5 bg-white rounded-2xl p-4 border-1">
-        <div>
-          <div className="text-sm text-slate-400 pb-1">アクティビティ名</div>
-          <div className="font-bold">
-            {activity.emoji} {activity.name}
+        <div className="flex justify-between items-center">
+          <div>
+            <div className="text-sm text-slate-400 pb-1">アクティビティ名</div>
+            <div className="font-bold">
+              {activity.emoji} {activity.name}
+            </div>
           </div>
+          <ActionMenu activityId={id} onDelete={deleteActivity} />
         </div>
         <div>
           <div className="text-sm text-slate-400 pb-1 flex items-center gap-1">
