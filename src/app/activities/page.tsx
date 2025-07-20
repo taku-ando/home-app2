@@ -1,4 +1,5 @@
-import { ArrowDownWideNarrow } from "lucide-react";
+import { ArrowDownWideNarrow, Plus } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   ActivityCard,
@@ -49,11 +50,17 @@ export default async function ProfilePage({ searchParams }: PageProps) {
     <div className="flex flex-col px-2 py-4 space-y-2">
       <section>
         <div className="flex justify-end gap-2">
+          <Button asChild className="mr-auto bg-cyan-800">
+            <Link href="/activities/new">
+              <Plus />
+              追加
+            </Link>
+          </Button>
           <FilterSheet
             availableTags={availableTags}
             hasActiveFilter={selectedTags.length > 0}
           />
-          <Button size="sm" variant="outline">
+          <Button variant="outline">
             <ArrowDownWideNarrow />
             期限順
           </Button>

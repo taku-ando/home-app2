@@ -38,7 +38,6 @@ export function FilterSheet({
     <Sheet>
       <SheetTrigger asChild>
         <Button
-          size="sm"
           variant={hasActiveFilter ? "default" : "outline"}
           className={hasActiveFilter ? "bg-cyan-800" : ""}
         >
@@ -65,7 +64,9 @@ export function FilterSheet({
           </div>
 
           <div className="space-y-3">
-            <h3 className="text-sm text-slate-600 font-medium">タグで絞り込み</h3>
+            <h3 className="text-sm text-slate-600 font-medium">
+              タグで絞り込み
+            </h3>
             <div className="flex flex-wrap gap-2">
               {availableTags.map((tag) => (
                 <Badge
@@ -85,7 +86,9 @@ export function FilterSheet({
           </div>
 
           <div className="space-y-3">
-            <h3 className="text-sm text-slate-600 font-medium">優先度で絞り込み</h3>
+            <h3 className="text-sm text-slate-600 font-medium">
+              優先度で絞り込み
+            </h3>
             <div className="flex flex-wrap gap-4">
               <label className="flex items-center space-x-2">
                 <input
