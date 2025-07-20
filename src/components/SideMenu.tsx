@@ -2,13 +2,12 @@
 
 import { Home, LogOut, Logs, Menu, Settings, User } from "lucide-react";
 import { useState } from "react";
+import GroupSelector from "@/components/GroupSelector";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
-  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { handleSignIn, handleSignOut } from "@/lib/auth-actions";
@@ -47,10 +46,7 @@ export default function SideMenu({ className, session }: SideMenuProps) {
       </SheetTrigger>
       <SheetContent side="left" className="w-80">
         <SheetHeader>
-          <SheetTitle className="text-left">メニュー</SheetTitle>
-          <SheetDescription className="text-left">
-            ナビゲーションメニュー
-          </SheetDescription>
+          <GroupSelector className="w-full mt-2" />
         </SheetHeader>
 
         {/* ユーザー情報セクション */}
@@ -97,7 +93,6 @@ export default function SideMenu({ className, session }: SideMenuProps) {
           </ul>
         </nav>
 
-        {/* サインアウトボタン */}
         {session?.user && (
           <div className="mt-auto px-4 pb-4">
             <form action={handleSignOut}>

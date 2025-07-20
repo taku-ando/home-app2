@@ -1,4 +1,8 @@
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import type { Context } from "hono";
+import { getDb } from "../db";
+import { checkGroupAuth, type GroupAuthResult } from "../utils/group-auth";
+import { DIContainer } from "./di/container";
 import { type ApiErrorResponse, type ApiResponse, HTTP_STATUS } from "./types";
 
 // 成功レスポンスのヘルパー関数
@@ -34,9 +38,9 @@ export function jsonSuccess<T>(
   c: Context,
   data: T,
   message?: string,
-  status = HTTP_STATUS.OK
+  status = 200
 ) {
-  return c.json(createSuccessResponse(data, message), status as 200);
+  return c.json(createSuccessResponse(data, message), status as never);
 }
 
 // Honoコンテキスト用のエラーレスポンス
@@ -48,10 +52,7 @@ export function jsonError(
   code?: string,
   details?: Record<string, unknown>
 ) {
-  return c.json(
-    createErrorResponse(error, message, code, details),
-    status as 500
-  );
+  return c.json(createErrorResponse(error, message, code, details), status);
 }
 
 // バリデーションエラーのヘルパー
@@ -115,4 +116,78 @@ export function handleError(c: Context, error: unknown) {
     ),
     500
   );
+}
+
+// データベース接続とDIコンテナ取得のヘルパー関数
+export function getDbContainer(c: Context):
+  | { success: false; error: Response }
+  | {
+      success: true;
+      data: { db: ReturnType<typeof getDb>; container: DIContainer };
+    } {
+  const { env } = getCloudflareContext();
+  if (!env.HOME_APP2_DB) {
+    return {
+      success: false,
+      error: c.json(
+        {
+          success: false,
+          error: "Database not configured",
+          message: "D1 database binding not found",
+        },
+        503
+      ),
+    };
+  }
+
+  const db = getDb(env.HOME_APP2_DB);
+  const container = new DIContainer(db);
+
+  return {
+    success: true,
+    data: { db, container },
+  };
+}
+
+/**
+ * データベース接続とグループ認証を同時に行うヘルパー関数
+ */
+export async function getDbContainerWithGroupAuth(c: Context): Promise<
+  | { success: false; error: Response }
+  | {
+      success: true;
+      data: {
+        db: ReturnType<typeof getDb>;
+        container: DIContainer;
+        groupAuth: GroupAuthResult;
+      };
+    }
+> {
+  const dbResult = getDbContainer(c);
+  if (!dbResult.success) {
+    return dbResult;
+  }
+
+  const { db, container } = dbResult.data;
+
+  // グループ認証チェック
+  const groupAuth = await checkGroupAuth(db);
+  if (!groupAuth.isAuthorized) {
+    return {
+      success: false,
+      error: c.json(
+        {
+          success: false,
+          error: "GroupAuthorizationError",
+          message: groupAuth.error || "Group authorization failed",
+        },
+        403
+      ),
+    };
+  }
+
+  return {
+    success: true,
+    data: { db, container, groupAuth },
+  };
 }
