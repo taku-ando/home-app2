@@ -53,7 +53,7 @@ export function FilterSheet({
 
         <div className="space-y-6 p-4">
           <div className="space-y-3">
-            <h3 className="font-medium">名前で検索</h3>
+            <h3 className="text-sm text-slate-600 font-medium">名前で検索</h3>
             <input
               type="text"
               placeholder="名前で絞り込み"
@@ -65,7 +65,7 @@ export function FilterSheet({
           </div>
 
           <div className="space-y-3">
-            <h3 className="font-medium">タグで絞り込み</h3>
+            <h3 className="text-sm text-slate-600 font-medium">タグで絞り込み</h3>
             <div className="flex flex-wrap gap-2">
               {availableTags.map((tag) => (
                 <Badge
@@ -85,7 +85,7 @@ export function FilterSheet({
           </div>
 
           <div className="space-y-3">
-            <h3 className="font-medium">優先度で絞り込み</h3>
+            <h3 className="text-sm text-slate-600 font-medium">優先度で絞り込み</h3>
             <div className="flex flex-wrap gap-4">
               <label className="flex items-center space-x-2">
                 <input
