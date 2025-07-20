@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { SessionProvider } from "next-auth/react";
 import Header from "@/components/Header";
 import { GroupProvider } from "@/contexts/GroupContext";
 
@@ -29,10 +30,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50`}
       >
-        <GroupProvider>
-          <Header />
-          <main className="pt-14">{children}</main>
-        </GroupProvider>
+        <SessionProvider>
+          <GroupProvider>
+            <Header />
+            <main className="pt-14">{children}</main>
+          </GroupProvider>
+        </SessionProvider>
       </body>
     </html>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import {
   createContext,
   type ReactNode,
@@ -17,6 +18,7 @@ interface GroupContextType {
   currentGroup: GroupMember | null;
   loading: boolean;
   error: string | null;
+  isAuthenticated: boolean;
   refreshGroups: () => Promise<void>;
   switchGroup: (
     groupId: number
@@ -30,10 +32,13 @@ interface GroupProviderProps {
 }
 
 export function GroupProvider({ children }: GroupProviderProps) {
+  const { data: session, status } = useSession();
   const [groups, setGroups] = useState<GroupMember[]>([]);
   const [currentGroupId, setCurrentGroupId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const isAuthenticated = status === "authenticated" && !!session?.user;
 
   // 現在のグループオブジェクトを取得
   const currentGroup =
@@ -41,6 +46,12 @@ export function GroupProvider({ children }: GroupProviderProps) {
 
   // グループデータを取得する関数
   const fetchGroups = useCallback(async () => {
+    // 認証されていない場合は処理をスキップ
+    if (!isAuthenticated) {
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
       setError(null);
@@ -83,7 +94,7 @@ export function GroupProvider({ children }: GroupProviderProps) {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [isAuthenticated]);
 
   // グループ切り替え関数
   const switchGroup = useCallback(
@@ -128,10 +139,12 @@ export function GroupProvider({ children }: GroupProviderProps) {
     []
   );
 
-  // 初回マウント時にデータを取得
+  // 認証状態が変わった時にデータを取得
   useEffect(() => {
-    fetchGroups();
-  }, [fetchGroups]);
+    if (status !== "loading") {
+      fetchGroups();
+    }
+  }, [fetchGroups, status]);
 
   // クッキーの変更を監視（他のタブでの変更を検知）
   useEffect(() => {
@@ -153,6 +166,7 @@ export function GroupProvider({ children }: GroupProviderProps) {
     currentGroup,
     loading,
     error,
+    isAuthenticated,
     refreshGroups: fetchGroups,
     switchGroup,
   };
