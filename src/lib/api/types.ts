@@ -70,10 +70,71 @@ export const HTTP_STATUS = {
   SERVICE_UNAVAILABLE: 503,
 } as const;
 
+export type HttpStatusCode = (typeof HTTP_STATUS)[keyof typeof HTTP_STATUS];
+
 // Cloudflare Workers環境変数の型定義
 export interface CloudflareEnv {
   NODE_ENV?: string;
   AUTH_SECRET?: string;
   GOOGLE_CLIENT_ID?: string;
   GOOGLE_CLIENT_SECRET?: string;
+}
+
+// ユーザー関連のAPI型定義
+export interface UserResponse {
+  id: number;
+  googleId: string;
+  email: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateUserRequest {
+  googleId: string;
+  email: string;
+  name: string;
+}
+
+export interface UpdateUserRequest {
+  name?: string;
+  email?: string;
+}
+
+// グループ関連のAPI型定義
+export interface GroupResponse {
+  id: number;
+  name: string;
+  createdBy: number;
+  deletedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateGroupRequest {
+  name: string;
+  createdBy: number;
+}
+
+export interface UpdateGroupRequest {
+  name?: string;
+}
+
+// グループメンバー関連のAPI型定義
+export interface GroupMemberResponse {
+  id: number;
+  groupId: number;
+  userId: number;
+  role: "admin" | "member";
+  joinedAt: string;
+}
+
+export interface CreateGroupMemberRequest {
+  groupId: number;
+  userId: number;
+  role?: "admin" | "member";
+}
+
+export interface UpdateGroupMemberRequest {
+  role?: "admin" | "member";
 }
