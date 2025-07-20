@@ -1,7 +1,7 @@
 import { auth } from "../../auth";
 import { GroupMemberRepositoryImpl } from "../../infrastructure/repositories/group_member_repository_impl";
 import type { DrizzleD1DB } from "../db/types";
-import { getSelectedGroupId } from "./cookie";
+import { getSelectedGroupId } from "./server-cookie";
 
 /**
  * 現在のユーザーと選択されたグループの権限チェック結果

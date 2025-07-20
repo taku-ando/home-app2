@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { auth } from "../../../auth";
 import { GroupMemberRepositoryImpl } from "../../../infrastructure/repositories/group_member_repository_impl";
-import { setSelectedGroupId } from "../../utils/cookie";
+import { setSelectedGroupId } from "../../utils/server-cookie";
 import {
   authError,
   getDbContainer,
@@ -54,6 +54,36 @@ export const groupsRoutes = new Hono()
 
       const group = await groupUseCase.createGroup({ name, createdBy });
       return jsonSuccess(c, group, "Group created successfully", 201);
+    } catch (error) {
+      return handleError(c, error);
+    }
+  })
+
+  // GET /api/v1/groups/me - ログインユーザーの所属グループ一覧取得
+  .get("/me", async (c) => {
+    console.log("[groups/me]");
+    try {
+      const dbResult = getDbContainer(c);
+      if (!dbResult.success) {
+        return dbResult.error;
+      }
+      const { db } = dbResult.data;
+
+      const session = await auth();
+      if (!session?.user?.id) {
+        return authError(c, "User not authenticated");
+      }
+
+      const userId = parseInt(session.user.id);
+      if (Number.isNaN(userId)) {
+        return validationError(c, "Invalid user ID in session");
+      }
+
+      const groupMemberRepository = new GroupMemberRepositoryImpl(db);
+      const userGroups = await groupMemberRepository.findByUserId(userId);
+      console.log("test userGroups", userGroups);
+
+      return jsonSuccess(c, userGroups, "User groups retrieved successfully");
     } catch (error) {
       return handleError(c, error);
     }
@@ -365,49 +395,6 @@ export const groupsRoutes = new Hono()
         { groupId: targetGroupId },
         "Group switched successfully"
       );
-    } catch (error) {
-      return handleError(c, error);
-    }
-  })
-
-  // GET /api/v1/groups/user/:userId - ユーザーの所属グループ一覧取得
-  .get("/user/:userId", async (c) => {
-    try {
-      const dbResult = getDbContainer(c);
-      if (!dbResult.success) {
-        return dbResult.error;
-      }
-      const { db } = dbResult.data;
-
-      const session = await auth();
-      if (!session?.user?.id) {
-        return authError(c, "User not authenticated");
-      }
-
-      const requestedUserId = parseInt(c.req.param("userId"));
-      const currentUserId = parseInt(session.user.id);
-
-      if (Number.isNaN(requestedUserId)) {
-        return validationError(c, "Invalid user ID");
-      }
-
-      // 自分のグループのみ取得可能
-      if (requestedUserId !== currentUserId) {
-        return c.json(
-          {
-            success: false,
-            error: "Forbidden",
-            message: "You can only view your own groups",
-          },
-          403
-        );
-      }
-
-      const groupMemberRepository = new GroupMemberRepositoryImpl(db);
-      const userGroups =
-        await groupMemberRepository.findByUserId(currentUserId);
-
-      return jsonSuccess(c, userGroups, "User groups retrieved successfully");
     } catch (error) {
       return handleError(c, error);
     }

@@ -6,6 +6,7 @@ export interface GroupMember {
   userId: number;
   role: GroupMemberRole;
   joinedAt: Date;
+  groupName?: string | null;
 }
 
 export interface CreateGroupMemberRequest {

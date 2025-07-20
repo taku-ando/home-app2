@@ -19,6 +19,9 @@
 			"suspicious": {
 				"noExplicitAny": "warn",
 				"noDocumentCookie": "off"
+			},
+			"a11y": {
+				"useSemanticElements": "off"
 			}
 		}
 	},

@@ -2,10 +2,11 @@ import { and, eq } from "drizzle-orm";
 import type {
   CreateGroupMemberRequest,
   GroupMember,
+  GroupMemberRole,
   UpdateGroupMemberRequest,
 } from "../../domain/models/group_member";
 import type { GroupMemberRepository } from "../../domain/repositories/group_member_repository";
-import { groupMembers } from "../../lib/db/schema";
+import { groupMembers, groups } from "../../lib/db/schema";
 import type { DrizzleD1DB } from "../../lib/db/types";
 
 export class GroupMemberRepositoryImpl implements GroupMemberRepository {
@@ -28,10 +29,27 @@ export class GroupMemberRepositoryImpl implements GroupMemberRepository {
   }
 
   async findByUserId(userId: number): Promise<GroupMember[]> {
-    return await this.db
-      .select()
+    const result = await this.db
+      .select({
+        id: groupMembers.id,
+        groupId: groupMembers.groupId,
+        userId: groupMembers.userId,
+        role: groupMembers.role,
+        joinedAt: groupMembers.joinedAt,
+        groupName: groups.name,
+      })
       .from(groupMembers)
+      .leftJoin(groups, eq(groupMembers.groupId, groups.id))
       .where(eq(groupMembers.userId, userId));
+
+    return result.map((row) => ({
+      id: row.id,
+      groupId: row.groupId,
+      userId: row.userId,
+      role: row.role as GroupMemberRole,
+      joinedAt: row.joinedAt,
+      groupName: row.groupName,
+    }));
   }
 
   async findByGroupAndUser(

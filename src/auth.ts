@@ -6,7 +6,10 @@ import { GroupMemberRepositoryImpl } from "./infrastructure/repositories/group_m
 import { InvitationRepositoryImpl } from "./infrastructure/repositories/invitation_repository_impl";
 import { UserRepositoryImpl } from "./infrastructure/repositories/user_repository_impl";
 import { getDb } from "./lib/db";
-import { getSelectedGroupId, setSelectedGroupId } from "./lib/utils/cookie";
+import {
+  getSelectedGroupId,
+  setSelectedGroupId,
+} from "./lib/utils/server-cookie";
 import { AuthUseCase } from "./usecases/auth_usecase";
 
 declare module "next-auth" {

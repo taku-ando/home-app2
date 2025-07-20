@@ -2,6 +2,7 @@
 
 import { Home, LogOut, Logs, Menu, Settings, User } from "lucide-react";
 import { useState } from "react";
+import GroupSelector from "@/components/GroupSelector";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -48,9 +49,6 @@ export default function SideMenu({ className, session }: SideMenuProps) {
       <SheetContent side="left" className="w-80">
         <SheetHeader>
           <SheetTitle className="text-left">メニュー</SheetTitle>
-          <SheetDescription className="text-left">
-            ナビゲーションメニュー
-          </SheetDescription>
         </SheetHeader>
 
         {/* ユーザー情報セクション */}
@@ -97,9 +95,9 @@ export default function SideMenu({ className, session }: SideMenuProps) {
           </ul>
         </nav>
 
-        {/* サインアウトボタン */}
         {session?.user && (
           <div className="mt-auto px-4 pb-4">
+            <GroupSelector className="w-full mb-2" />
             <form action={handleSignOut}>
               <Button
                 type="submit"
