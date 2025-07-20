@@ -8,7 +8,6 @@ import {
   Sheet,
   SheetContent,
   SheetHeader,
-  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { handleSignIn, handleSignOut } from "@/lib/auth-actions";
@@ -47,7 +46,7 @@ export default function SideMenu({ className, session }: SideMenuProps) {
       </SheetTrigger>
       <SheetContent side="left" className="w-80">
         <SheetHeader>
-          <SheetTitle className="text-left">メニュー</SheetTitle>
+          <GroupSelector className="w-full mt-2" />
         </SheetHeader>
 
         {/* ユーザー情報セクション */}
@@ -96,7 +95,6 @@ export default function SideMenu({ className, session }: SideMenuProps) {
 
         {session?.user && (
           <div className="mt-auto px-4 pb-4">
-            <GroupSelector className="w-full mb-2" />
             <form action={handleSignOut}>
               <Button
                 type="submit"

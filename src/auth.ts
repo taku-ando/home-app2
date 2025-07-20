@@ -2,6 +2,7 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 import NextAuth, { type DefaultSession } from "next-auth";
 import "next-auth/jwt";
 import Google from "next-auth/providers/google";
+import type { GroupMember } from "./domain/models/group_member";
 import { GroupMemberRepositoryImpl } from "./infrastructure/repositories/group_member_repository_impl";
 import { InvitationRepositoryImpl } from "./infrastructure/repositories/invitation_repository_impl";
 import { UserRepositoryImpl } from "./infrastructure/repositories/user_repository_impl";
@@ -17,6 +18,7 @@ declare module "next-auth" {
     user: {
       id: string;
       googleId: string;
+      groups: GroupMember[];
     } & DefaultSession["user"];
   }
 
@@ -28,6 +30,7 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   interface JWT {
     googleId?: string;
+    groups?: GroupMember[];
   }
 }
 
@@ -70,16 +73,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           user.id = authenticatedUser.id.toString();
           user.googleId = authenticatedUser.googleId;
 
+          // ユーザーのグループ情報を取得
+          const userGroups = await groupMemberRepository.findByUserId(
+            authenticatedUser.id
+          );
+
           // デフォルトグループの設定
           const currentGroupId = await getSelectedGroupId();
-          if (!currentGroupId) {
+          if (!currentGroupId && userGroups.length > 0) {
             // まだグループが選択されていない場合、ユーザーの最初のグループを設定
-            const userGroups = await groupMemberRepository.findByUserId(
-              authenticatedUser.id
-            );
-            if (userGroups.length > 0) {
-              await setSelectedGroupId(userGroups[0].groupId);
-            }
+            await setSelectedGroupId(userGroups[0].groupId);
           }
 
           return true;
@@ -90,16 +93,38 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return true;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       if (user) {
         token.googleId = user.googleId;
       }
+
+      // セッション更新時やログイン時にグループ情報を更新
+      if (trigger === "update" || (user && token.sub)) {
+        try {
+          const { env } = getCloudflareContext();
+          if (env.HOME_APP2_DB && token.sub) {
+            const db = getDb(env.HOME_APP2_DB);
+            const groupMemberRepository = new GroupMemberRepositoryImpl(db);
+            const userId = parseInt(token.sub);
+            if (!Number.isNaN(userId)) {
+              const userGroups =
+                await groupMemberRepository.findByUserId(userId);
+              token.groups = userGroups;
+            }
+          }
+        } catch (error) {
+          console.error("Error fetching groups in JWT callback:", error);
+          // エラーが発生してもセッションは継続
+        }
+      }
+
       return token;
     },
     async session({ session, token }) {
       if (token.googleId && token.sub) {
         session.user.id = token.sub;
         session.user.googleId = token.googleId as string;
+        session.user.groups = token.groups || [];
       }
       return session;
     },

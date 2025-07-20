@@ -8,8 +8,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useGroups } from "@/contexts/GroupContext";
 import type { GroupMember } from "@/domain/models/group_member";
+import { useCurrentGroup } from "@/hooks/useCurrentGroup";
 
 interface GroupSelectorProps {
   className?: string;
@@ -19,7 +19,8 @@ export default function GroupSelector({ className }: GroupSelectorProps) {
   const [open, setOpen] = useState(false);
   const [switching, setSwitching] = useState(false);
 
-  const { groups, currentGroup, loading, error, switchGroup } = useGroups();
+  const { groups, currentGroup, loading, error, switchGroup } =
+    useCurrentGroup();
 
   const handleGroupSwitch = async (groupId: number) => {
     if (switching || groupId === currentGroup?.groupId) {
