@@ -75,10 +75,7 @@ export function useCurrentGroup() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data = (await response.json()) as {
-          success: boolean;
-          message?: string;
-        };
+        const data = await response.json();
 
         if (data.success) {
           // ローカル状態を更新

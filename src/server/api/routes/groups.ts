@@ -208,10 +208,9 @@ export const groupsRoutes = new Hono()
         );
       }
 
-      return jsonSuccess(
-        c,
-        { removed: true },
-        "Member removed from group successfully"
+      return c.json(
+        { removed: true, message: "Member removed from group successfully" },
+        200
       );
     } catch (error) {
       return handleError(c, error);
@@ -257,7 +256,7 @@ export const groupsRoutes = new Hono()
       // cookieに新しいグループIDを設定
       await setSelectedGroupId(targetGroupId);
 
-      return c.json({ success: true });
+      return c.json({ success: true, message: "" });
     } catch (error) {
       return handleError(c, error);
     }
