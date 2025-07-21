@@ -3,8 +3,8 @@
 import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import { client } from "@/lib/rpc-client";
+import type { GroupMember } from "@/lib/schemas";
 import { clientCookieUtils } from "@/lib/utils/cookie";
-import type { GroupMember } from "@/server/domain/models/group_member";
 
 /**
  * useCurrentGroup - 現在のグループ管理カスタムフック

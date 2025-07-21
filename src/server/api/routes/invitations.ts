@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import type { InvitationApiRequest } from "../../types";
+import type { CreateInvitationRequest } from "@/lib/schemas";
 import {
   handleError,
   jsonSuccess,
@@ -16,7 +16,7 @@ export const invitationsRoutes = new Hono()
       const container = c.get("diContainer");
       const invitationUseCase = container.getInvitationUseCase();
 
-      const body = await c.req.json<InvitationApiRequest>();
+      const body = await c.req.json<CreateInvitationRequest>();
 
       const invitation = await invitationUseCase.createInvitation(body);
       return jsonSuccess(c, invitation, undefined, 201);

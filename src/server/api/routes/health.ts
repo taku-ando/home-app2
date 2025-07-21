@@ -1,12 +1,12 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { Hono } from "hono";
-import { getDb } from "../../infrastructure/db";
-import { families } from "../../infrastructure/db/schema";
 import type {
   DbHealthResponse,
   DetailedHealthResponse,
   HealthResponse,
-} from "../../types";
+} from "@/lib/schemas";
+import { getDb } from "../../infrastructure/db";
+import { families } from "../../infrastructure/db/schema";
 import { handleError, jsonSuccess } from "../../utils";
 import { diMiddleware } from "../middleware/di";
 

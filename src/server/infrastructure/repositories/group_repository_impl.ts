@@ -3,7 +3,7 @@ import type {
   CreateGroupRequest,
   Group,
   UpdateGroupRequest,
-} from "../../domain/models/group";
+} from "@/lib/schemas";
 import type { GroupRepository } from "../../domain/repositories/group_repository";
 import { groups } from "../db/schema";
 import type { DrizzleD1DB } from "../db/types";

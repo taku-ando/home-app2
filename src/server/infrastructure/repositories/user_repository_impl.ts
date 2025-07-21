@@ -1,9 +1,5 @@
 import { eq } from "drizzle-orm";
-import type {
-  CreateUserRequest,
-  UpdateUserRequest,
-  User,
-} from "../../domain/models/user";
+import type { CreateUserRequest, UpdateUserRequest, User } from "@/lib/schemas";
 import type { UserRepository } from "../../domain/repositories/user_repository";
 import { users } from "../db/schema";
 import type { DrizzleD1DB } from "../db/types";

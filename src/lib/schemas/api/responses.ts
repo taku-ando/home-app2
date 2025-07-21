@@ -9,13 +9,12 @@ export const baseResponseSchema = z.object({
   message: z.string().optional(),
 });
 
-export const errorResponseSchema = baseResponseSchema.extend({
+export const errorResponseSchema = z.object({
   success: z.literal(false),
-  error: z.object({
-    code: z.string(),
-    message: z.string(),
-    details: z.unknown().optional(),
-  }),
+  error: z.string(),
+  message: z.string(),
+  code: z.string().optional(),
+  details: z.record(z.string(), z.unknown()).optional(),
 });
 
 // データを含むレスポンススキーマ

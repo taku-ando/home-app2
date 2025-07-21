@@ -1,4 +1,4 @@
-import type { CreateUserRequest, User } from "../domain/models/user";
+import type { CreateUserRequest, User } from "@/lib/schemas";
 import type { GroupMemberRepository } from "../domain/repositories/group_member_repository";
 import type { InvitationRepository } from "../domain/repositories/invitation_repository";
 import type { UserRepository } from "../domain/repositories/user_repository";

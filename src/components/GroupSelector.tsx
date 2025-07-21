@@ -9,7 +9,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useCurrentGroup } from "@/hooks/useCurrentGroup";
-import type { GroupMember } from "@/server/domain/models/group_member";
+import type { GroupMember } from "@/lib/schemas";
 
 interface GroupSelectorProps {
   className?: string;
@@ -146,7 +146,7 @@ export default function GroupSelector({ className }: GroupSelectorProps) {
  * グループ名を取得
  */
 function getGroupName(group: GroupMember): string {
-  return group.groupName || `グループ ${group.groupId}`;
+  return `グループ ${group.groupId}`;
 }
 
 /**

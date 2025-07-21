@@ -2,7 +2,7 @@ import type {
   CreateInvitationRequest,
   Invitation,
   UpdateInvitationRequest,
-} from "../models/invitation";
+} from "@/lib/schemas";
 
 export interface InvitationRepository {
   findById(id: number): Promise<Invitation | null>;

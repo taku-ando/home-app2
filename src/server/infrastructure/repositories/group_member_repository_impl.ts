@@ -4,7 +4,7 @@ import type {
   GroupMember,
   GroupMemberRole,
   UpdateGroupMemberRequest,
-} from "../../domain/models/group_member";
+} from "@/lib/schemas";
 import type { GroupMemberRepository } from "../../domain/repositories/group_member_repository";
 import { groupMembers, groups } from "../db/schema";
 import type { DrizzleD1DB } from "../db/types";

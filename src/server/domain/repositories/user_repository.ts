@@ -1,8 +1,4 @@
-import type {
-  CreateUserRequest,
-  UpdateUserRequest,
-  User,
-} from "../models/user";
+import type { CreateUserRequest, UpdateUserRequest, User } from "@/lib/schemas";
 
 export interface UserRepository {
   findById(id: number): Promise<User | null>;

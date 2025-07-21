@@ -1,7 +1,4 @@
-import type {
-  CreateInvitationRequest,
-  Invitation,
-} from "../domain/models/invitation";
+import type { CreateInvitationRequest, Invitation } from "@/lib/schemas";
 import type { GroupRepository } from "../domain/repositories/group_repository";
 import type { InvitationRepository } from "../domain/repositories/invitation_repository";
 import type { UserRepository } from "../domain/repositories/user_repository";

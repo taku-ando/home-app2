@@ -1,8 +1,4 @@
-import type {
-  CreateUserRequest,
-  UpdateUserRequest,
-  User,
-} from "../domain/models/user";
+import type { CreateUserRequest, UpdateUserRequest, User } from "@/lib/schemas";
 import type { UserRepository } from "../domain/repositories/user_repository";
 
 export class UserUseCase {

@@ -3,7 +3,7 @@ import type {
   CreateInvitationRequest,
   Invitation,
   UpdateInvitationRequest,
-} from "../../domain/models/invitation";
+} from "@/lib/schemas";
 import type { InvitationRepository } from "../../domain/repositories/invitation_repository";
 import { invitations } from "../db/schema";
 import type { DrizzleD1DB } from "../db/types";

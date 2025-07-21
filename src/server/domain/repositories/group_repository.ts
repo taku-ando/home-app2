@@ -2,7 +2,7 @@ import type {
   CreateGroupRequest,
   Group,
   UpdateGroupRequest,
-} from "../models/group";
+} from "@/lib/schemas";
 
 export interface GroupRepository {
   findById(id: number): Promise<Group | null>;

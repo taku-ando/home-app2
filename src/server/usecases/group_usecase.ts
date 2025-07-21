@@ -1,12 +1,10 @@
 import type {
+  CreateGroupMemberRequest,
   CreateGroupRequest,
   Group,
-  UpdateGroupRequest,
-} from "../domain/models/group";
-import type {
-  CreateGroupMemberRequest,
   GroupMember,
-} from "../domain/models/group_member";
+  UpdateGroupRequest,
+} from "@/lib/schemas";
 import type { GroupMemberRepository } from "../domain/repositories/group_member_repository";
 import type { GroupRepository } from "../domain/repositories/group_repository";
 import type { UserRepository } from "../domain/repositories/user_repository";

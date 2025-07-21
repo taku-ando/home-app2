@@ -2,7 +2,7 @@ import type {
   CreateGroupMemberRequest,
   GroupMember,
   UpdateGroupMemberRequest,
-} from "../models/group_member";
+} from "@/lib/schemas";
 
 export interface GroupMemberRepository {
   findById(id: number): Promise<GroupMember | null>;

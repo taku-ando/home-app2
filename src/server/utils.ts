@@ -1,16 +1,17 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import type { Context } from "hono";
 import type { ContentfulStatusCode } from "hono/utils/http-status";
+import type { DataResponse, ErrorResponse } from "@/lib/schemas";
+import { HTTP_STATUS } from "./constants";
 import { DIContainer } from "./di/container";
 import { checkGroupAuth, type GroupAuthResult } from "./group-auth";
 import { getDb } from "./infrastructure/db";
-import { type ApiErrorResponse, type ApiResponse, HTTP_STATUS } from "./types";
 
 // 成功レスポンスのヘルパー関数
 export function createSuccessResponse<T>(
   data: T,
   message?: string
-): ApiResponse<T> {
+): DataResponse<T> {
   return {
     success: true,
     data,
@@ -24,7 +25,7 @@ export function createErrorResponse(
   message: string,
   code?: string,
   details?: Record<string, unknown>
-): ApiErrorResponse {
+): ErrorResponse {
   return {
     success: false,
     error,

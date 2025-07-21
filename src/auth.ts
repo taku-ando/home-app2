@@ -2,11 +2,11 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 import NextAuth, { type DefaultSession } from "next-auth";
 import "next-auth/jwt";
 import Google from "next-auth/providers/google";
+import type { GroupMember } from "@/lib/schemas";
 import {
   getSelectedGroupId,
   setSelectedGroupId,
 } from "./lib/utils/server-cookie";
-import type { GroupMember } from "./server/domain/models/group_member";
 import { getDb } from "./server/infrastructure/db";
 import { GroupMemberRepositoryImpl } from "./server/infrastructure/repositories/group_member_repository_impl";
 import { InvitationRepositoryImpl } from "./server/infrastructure/repositories/invitation_repository_impl";
