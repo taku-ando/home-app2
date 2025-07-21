@@ -2,8 +2,8 @@
 
 import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
-import type { GroupMember } from "@/domain/models/group_member";
 import { client } from "@/lib/rpc-client";
+import type { GroupMember } from "@/lib/schemas";
 import { clientCookieUtils } from "@/lib/utils/cookie";
 
 /**
@@ -75,10 +75,7 @@ export function useCurrentGroup() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data = (await response.json()) as {
-          success: boolean;
-          message?: string;
-        };
+        const data = await response.json();
 
         if (data.success) {
           // ローカル状態を更新

@@ -2,16 +2,15 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 import NextAuth, { type DefaultSession } from "next-auth";
 import "next-auth/jwt";
 import Google from "next-auth/providers/google";
-import type { GroupMember } from "./domain/models/group_member";
-import { GroupMemberRepositoryImpl } from "./infrastructure/repositories/group_member_repository_impl";
-import { InvitationRepositoryImpl } from "./infrastructure/repositories/invitation_repository_impl";
-import { UserRepositoryImpl } from "./infrastructure/repositories/user_repository_impl";
-import { getDb } from "./lib/db";
+import type { GroupMember } from "@/lib/schemas";
 import {
   getSelectedGroupId,
   setSelectedGroupId,
 } from "./lib/utils/server-cookie";
-import { AuthUseCase } from "./usecases/auth_usecase";
+import { getDb } from "./server/infrastructure/db";
+import { GroupMemberRepositoryImpl } from "./server/infrastructure/repositories/group_member_repository_impl";
+import { UserRepositoryImpl } from "./server/infrastructure/repositories/user_repository_impl";
+import { AuthUseCase } from "./server/usecases/auth_usecase";
 
 declare module "next-auth" {
   interface Session {
@@ -50,13 +49,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           const db = getDb(env.HOME_APP2_DB);
           const userRepository = new UserRepositoryImpl(db);
-          const invitationRepository = new InvitationRepositoryImpl(db);
           const groupMemberRepository = new GroupMemberRepositoryImpl(db);
-          const authUseCase = new AuthUseCase(
-            userRepository,
-            invitationRepository,
-            groupMemberRepository
-          );
+          const authUseCase = new AuthUseCase(userRepository);
 
           if (!profile.sub || !profile.email || !profile.name) {
             console.error("Missing required profile information");
@@ -81,7 +75,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           // デフォルトグループの設定
           const currentGroupId = await getSelectedGroupId();
           if (!currentGroupId && userGroups.length > 0) {
-            // まだグループが選択されていない場合、ユーザーの最初のグループを設定
             await setSelectedGroupId(userGroups[0].groupId);
           }
 
@@ -114,7 +107,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           }
         } catch (error) {
           console.error("Error fetching groups in JWT callback:", error);
-          // エラーが発生してもセッションは継続
         }
       }
 

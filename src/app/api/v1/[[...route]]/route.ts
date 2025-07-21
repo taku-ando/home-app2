@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import { app } from "@/lib/api/hono";
+import { app } from "@/server/hono";
 
 // Honoアプリと統合するヘルパー関数
 async function handleRequest(request: NextRequest, method: string) {

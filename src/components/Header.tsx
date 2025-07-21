@@ -1,5 +1,5 @@
-import { auth } from "@/auth";
 import SideMenu from "@/components/SideMenu";
+import { auth } from "../auth";
 
 export default async function Header() {
   const session = await auth();

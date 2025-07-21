@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import type { ActivityFormData } from "@/lib/validations/activity";
+import type { ActivityFormData } from "@/lib/schemas/activity";
 import { ActivityForm } from "../../_components/ActivityForm";
 
 export type Props = {
