@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { groupsRoutes } from "./groups";
 import { healthRoutes } from "./health";
-import invitationsRoutes from "./invitations";
+import { invitationsRoutes } from "./invitations";
 import { usersRoutes } from "./users";
 
 // APIルートをまとめるためのメインルーター

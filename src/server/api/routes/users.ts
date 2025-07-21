@@ -1,16 +1,14 @@
 import { Hono } from "hono";
-import { getDbContainer, handleError, jsonSuccess } from "../../utils";
+import { handleError, jsonSuccess } from "../../utils";
+import { diMiddleware } from "../middleware/di";
 
 export const usersRoutes = new Hono()
+  .use("*", diMiddleware)
   // GET /api/v1/users - 全ユーザー取得
   .get("/", async (c) => {
     try {
-      const dbResult = getDbContainer(c);
-      if (!dbResult.success) {
-        return dbResult.error;
-      }
-
-      const userUseCase = dbResult.data.container.getUserUseCase();
+      const container = c.get("diContainer");
+      const userUseCase = container.getUserUseCase();
 
       const users = await userUseCase.getAllUsers();
       return jsonSuccess(c, users, "Users retrieved successfully");
@@ -22,10 +20,8 @@ export const usersRoutes = new Hono()
   // GET /api/v1/users/:id - 特定ユーザー取得
   .get("/:id", async (c) => {
     try {
-      const dbResult = getDbContainer(c);
-      if (!dbResult.success) {
-        return dbResult.error;
-      }
+      const container = c.get("diContainer");
+      const userUseCase = container.getUserUseCase();
 
       const id = parseInt(c.req.param("id"));
       if (Number.isNaN(id)) {
@@ -38,8 +34,6 @@ export const usersRoutes = new Hono()
           400
         );
       }
-
-      const userUseCase = dbResult.data.container.getUserUseCase();
 
       const user = await userUseCase.getUserById(id);
       if (!user) {
@@ -62,10 +56,8 @@ export const usersRoutes = new Hono()
   // GET /api/v1/users/:id/groups - ユーザーのグループ一覧取得
   .get("/:id/groups", async (c) => {
     try {
-      const dbResult = getDbContainer(c);
-      if (!dbResult.success) {
-        return dbResult.error;
-      }
+      const container = c.get("diContainer");
+      const groupUseCase = container.getGroupUseCase();
 
       const id = parseInt(c.req.param("id"));
       if (Number.isNaN(id)) {
@@ -79,8 +71,6 @@ export const usersRoutes = new Hono()
         );
       }
 
-      const groupUseCase = dbResult.data.container.getGroupUseCase();
-
       const userGroups = await groupUseCase.getUserGroups(id);
       return jsonSuccess(c, userGroups, "User groups retrieved successfully");
     } catch (error) {
@@ -91,10 +81,8 @@ export const usersRoutes = new Hono()
   // PUT /api/v1/users/:id - ユーザー情報更新
   .put("/:id", async (c) => {
     try {
-      const dbResult = getDbContainer(c);
-      if (!dbResult.success) {
-        return dbResult.error;
-      }
+      const container = c.get("diContainer");
+      const userUseCase = container.getUserUseCase();
 
       const id = parseInt(c.req.param("id"));
       if (Number.isNaN(id)) {
@@ -122,8 +110,6 @@ export const usersRoutes = new Hono()
         );
       }
 
-      const userUseCase = dbResult.data.container.getUserUseCase();
-
       const updatedUser = await userUseCase.updateUser(id, { name, email });
       if (!updatedUser) {
         return c.json(
@@ -145,10 +131,8 @@ export const usersRoutes = new Hono()
   // DELETE /api/v1/users/:id - ユーザー削除
   .delete("/:id", async (c) => {
     try {
-      const dbResult = getDbContainer(c);
-      if (!dbResult.success) {
-        return dbResult.error;
-      }
+      const container = c.get("diContainer");
+      const userUseCase = container.getUserUseCase();
 
       const id = parseInt(c.req.param("id"));
       if (Number.isNaN(id)) {
@@ -161,8 +145,6 @@ export const usersRoutes = new Hono()
           400
         );
       }
-
-      const userUseCase = dbResult.data.container.getUserUseCase();
 
       const deleted = await userUseCase.deleteUser(id);
       if (!deleted) {

@@ -139,4 +139,8 @@ export class GroupUseCase {
 
     return await this.groupMemberRepository.findByUserId(userId);
   }
+
+  async isUserInGroup(userId: number, groupId: number): Promise<boolean> {
+    return this.groupMemberRepository.isUserInGroup(userId, groupId);
+  }
 }

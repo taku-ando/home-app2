@@ -8,8 +8,10 @@ import type {
   HealthResponse,
 } from "../../types";
 import { handleError, jsonSuccess } from "../../utils";
+import { diMiddleware } from "../middleware/di";
 
 export const healthRoutes = new Hono()
+  .use("*", diMiddleware)
   // GET /api/v1/health - 基本的なヘルスチェック
   .get("/", (c) => {
     try {
