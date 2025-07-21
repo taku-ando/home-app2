@@ -4,6 +4,7 @@ export const groupMemberSchema = z.object({
   id: z.number().int().positive(),
   groupId: z.number().int().positive(),
   userId: z.number().int().positive(),
+  groupName: z.string(),
   role: z.enum(["system", "admin", "member"]),
   joinedAt: z.date(),
 });

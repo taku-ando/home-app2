@@ -9,7 +9,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useCurrentGroup } from "@/hooks/useCurrentGroup";
-import type { GroupMember } from "@/lib/schemas";
 
 interface GroupSelectorProps {
   className?: string;
@@ -96,7 +95,7 @@ export default function GroupSelector({ className }: GroupSelectorProps) {
         >
           <div className="flex items-center gap-2">
             <Users className="h-4 w-4" />
-            <span className="truncate">{getGroupName(currentGroup)}</span>
+            <span className="truncate">{currentGroup.groupName}</span>
           </div>
           {switching ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -123,7 +122,7 @@ export default function GroupSelector({ className }: GroupSelectorProps) {
               <div className="flex items-center gap-2 w-full">
                 <Users className="h-4 w-4" />
                 <div className="flex-1 text-left">
-                  <div className="font-medium">{getGroupName(group)}</div>
+                  <div className="font-medium">{group.groupName}</div>
                   <div className="text-xs text-gray-500 dark:text-gray-400">
                     {getRoleDisplayName(group.role)}
                   </div>
@@ -140,13 +139,6 @@ export default function GroupSelector({ className }: GroupSelectorProps) {
       </PopoverContent>
     </Popover>
   );
-}
-
-/**
- * グループ名を取得
- */
-function getGroupName(group: GroupMember): string {
-  return `グループ ${group.groupId}`;
 }
 
 /**
