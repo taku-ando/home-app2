@@ -17,10 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import {
-  type ActivityFormData,
-  activitySchema,
-} from "@/lib/validations/activity";
+import { type ActivityFormData, activitySchema } from "@/lib/schemas/activity";
 import { EmojiPicker } from "./EmojiPicker";
 import { TagInput } from "./TagInput";
 
