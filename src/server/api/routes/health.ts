@@ -1,13 +1,13 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { Hono } from "hono";
-import { getDb } from "../../db";
-import { families } from "../../db/schema";
+import { getDb } from "../../infrastructure/db";
+import { families } from "../../infrastructure/db/schema";
 import type {
   DbHealthResponse,
   DetailedHealthResponse,
   HealthResponse,
-} from "../types";
-import { handleError, jsonSuccess } from "../utils";
+} from "../../types";
+import { handleError, jsonSuccess } from "../../utils";
 
 export const healthRoutes = new Hono()
   // GET /api/v1/health - 基本的なヘルスチェック

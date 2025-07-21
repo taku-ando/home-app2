@@ -2,16 +2,16 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 import NextAuth, { type DefaultSession } from "next-auth";
 import "next-auth/jwt";
 import Google from "next-auth/providers/google";
-import type { GroupMember } from "./domain/models/group_member";
-import { GroupMemberRepositoryImpl } from "./infrastructure/repositories/group_member_repository_impl";
-import { InvitationRepositoryImpl } from "./infrastructure/repositories/invitation_repository_impl";
-import { UserRepositoryImpl } from "./infrastructure/repositories/user_repository_impl";
-import { getDb } from "./lib/db";
 import {
   getSelectedGroupId,
   setSelectedGroupId,
 } from "./lib/utils/server-cookie";
-import { AuthUseCase } from "./usecases/auth_usecase";
+import type { GroupMember } from "./server/domain/models/group_member";
+import { getDb } from "./server/infrastructure/db";
+import { GroupMemberRepositoryImpl } from "./server/infrastructure/repositories/group_member_repository_impl";
+import { InvitationRepositoryImpl } from "./server/infrastructure/repositories/invitation_repository_impl";
+import { UserRepositoryImpl } from "./server/infrastructure/repositories/user_repository_impl";
+import { AuthUseCase } from "./server/usecases/auth_usecase";
 
 declare module "next-auth" {
   interface Session {

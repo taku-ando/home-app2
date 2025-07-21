@@ -5,8 +5,8 @@ import type {
   UpdateInvitationRequest,
 } from "../../domain/models/invitation";
 import type { InvitationRepository } from "../../domain/repositories/invitation_repository";
-import { invitations } from "../../lib/db/schema";
-import type { DrizzleD1DB } from "../../lib/db/types";
+import { invitations } from "../db/schema";
+import type { DrizzleD1DB } from "../db/types";
 
 export class InvitationRepositoryImpl implements InvitationRepository {
   constructor(private db: DrizzleD1DB) {}

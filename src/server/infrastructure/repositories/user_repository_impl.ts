@@ -5,8 +5,8 @@ import type {
   User,
 } from "../../domain/models/user";
 import type { UserRepository } from "../../domain/repositories/user_repository";
-import { users } from "../../lib/db/schema";
-import type { DrizzleD1DB } from "../../lib/db/types";
+import { users } from "../db/schema";
+import type { DrizzleD1DB } from "../db/types";
 
 export class UserRepositoryImpl implements UserRepository {
   constructor(private db: DrizzleD1DB) {}

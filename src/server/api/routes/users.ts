@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { getDbContainer, handleError, jsonSuccess } from "../utils";
+import { getDbContainer, handleError, jsonSuccess } from "../../utils";
 
 export const usersRoutes = new Hono()
   // GET /api/v1/users - 全ユーザー取得

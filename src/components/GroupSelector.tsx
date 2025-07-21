@@ -8,8 +8,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import type { GroupMember } from "@/domain/models/group_member";
 import { useCurrentGroup } from "@/hooks/useCurrentGroup";
+import type { GroupMember } from "@/server/domain/models/group_member";
 
 interface GroupSelectorProps {
   className?: string;

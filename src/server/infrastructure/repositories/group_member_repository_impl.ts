@@ -6,8 +6,8 @@ import type {
   UpdateGroupMemberRequest,
 } from "../../domain/models/group_member";
 import type { GroupMemberRepository } from "../../domain/repositories/group_member_repository";
-import { groupMembers, groups } from "../../lib/db/schema";
-import type { DrizzleD1DB } from "../../lib/db/types";
+import { groupMembers, groups } from "../db/schema";
+import type { DrizzleD1DB } from "../db/types";
 
 export class GroupMemberRepositoryImpl implements GroupMemberRepository {
   constructor(private db: DrizzleD1DB) {}
