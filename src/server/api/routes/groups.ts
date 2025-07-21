@@ -256,7 +256,7 @@ export const groupsRoutes = new Hono()
       // cookieに新しいグループIDを設定
       await setSelectedGroupId(targetGroupId);
 
-      return c.json({ success: true, message: "" });
+      return jsonSuccess(c, { success: true })
     } catch (error) {
       return handleError(c, error);
     }

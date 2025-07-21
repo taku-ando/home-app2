@@ -4,6 +4,7 @@ import { DIContainer } from "./di/container";
 import { checkGroupAuth, type GroupAuthResult } from "./group-auth";
 import { getDb } from "./infrastructure/db";
 import { type ApiErrorResponse, type ApiResponse, HTTP_STATUS } from "./types";
+import { ContentfulStatusCode } from "hono/utils/http-status";
 
 // 成功レスポンスのヘルパー関数
 export function createSuccessResponse<T>(
@@ -38,9 +39,9 @@ export function jsonSuccess<T>(
   c: Context,
   data: T,
   message?: string,
-  status = 200
+  status?: ContentfulStatusCode
 ) {
-  return c.json(createSuccessResponse(data, message), status as never);
+  return c.json(createSuccessResponse(data, message), status ?? 200);
 }
 
 // Honoコンテキスト用のエラーレスポンス
